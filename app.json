@@ -1,0 +1,14 @@
+{
+  "name": "HAMZA-JUTT-MD-BOT",
+  "description": "🔥 Stylish WhatsApp Bot by Hamza Jutt - AI + MD Features",
+  "logo": "https://i.imgur.com/your-logo-link.png",
+  "repository": "https://github.com/YOUR-USERNAME/HAMZA-JUTT-MD-BOT",
+  "keywords": ["hamza-jutt", "md-bot", "whatsapp-bot", "ai"],
+  "stack": "heroku-22",
+  "buildpacks": [{ "url": "heroku/nodejs" }],
+  "env": {
+    "BOT_NAME": { "description": "Apne bot ka naam", "value": "HAMZA-JUTT-MD-BOT", "required": true },
+    "GEMINI_KEY": { "description": "Gemini API Key (aistudio.google.com se)", "required": true },
+    "OWNER_NUMBER": { "description": "Aapka WhatsApp Number (92300...)", "required": true }
+  }
+}
