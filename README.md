@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Black+Ops+One&size=60&duration=2500&pause=800&color=F7C500&center=true&vCenter=true&width=1100&height=100&lines=👑+HAMZA-JUTT-MD-BOT+👑;⚡+MOST+POWERFUL+MD+BOT+⚡;🔥+BY+HAMZA+JUTT+🔥;💎+STYLISH+%2B+ANIMATED+💎" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Black+Ops+One&size=60&duration=2500&pause=800&color=F7C500&center=true&vCenter=true&width=1100&height=100&lines=👑+HAMZA-JUTT-MD-BOT+👑;⚡+MOST+POWERFUL+MD+BOT+⚡;🔥+BY+HAMZA+JUTT+🔥" />
 </p>
 
 <h1 align="center">👑 𝐇𝐀𝐌𝐙𝐀-𝐉𝐔𝐓𝐓-𝐌𝐃-𝐁𝐎𝐓 👑</h1>
