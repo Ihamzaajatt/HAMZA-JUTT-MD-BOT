@@ -1,0 +1,13 @@
+{
+  "name": "hamza-jutt-md-bot",
+  "version": "2.0.0",
+  "description": "⚡ HAMZA JUTT MD BOT - The Ultimate WhatsApp AI Bot",
+  "main": "index.js",
+  "scripts": { "start": "node index.js" },
+  "author": "HAMZA JUTT",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.8",
+    "qrcode-terminal": "^0.12.0",
+    "axios": "^1.6.7"
+  }
+}
