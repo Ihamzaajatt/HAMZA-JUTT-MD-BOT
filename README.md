@@ -29,7 +29,6 @@
 - ⚡ **FASTEST RESPONSE**
 - 🛡️ **ANTI-BAN SYSTEM**
 - 🚀 **POWERED BY 𝐇𝐀𝐌𝐙𝐀 𝐉𝐔𝐓𝐓**
-- 💎 **STYLISH ANIMATED NAME**
 
 ---
 
