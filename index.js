@@ -4,14 +4,70 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const figlet = require('figlet');
-const { Boom } = require('@hapi/boom');
+const boom = require('@hapi/boom');
 const express = require('express');
-const qrcode = require('qrcode-terminal');
+const qrcodeTerminal = require('qrcode-terminal');
+const QRCode = require('qrcode');
+
+// Hamza~ Session Restore - Sab se upar
+if(process.env.SESSION_ID && process.env.SESSION_ID.startsWith('Hamza~')){
+  try{
+    let b64 = process.env.SESSION_ID.replace('Hamza~','');
+    if(!fs.existsSync('./auth_info_baileys')) fs.mkdirSync('./auth_info_baileys',{recursive:true});
+    fs.writeFileSync('./auth_info_baileys/creds.json', Buffer.from(b64,'base64').toString());
+    console.log(chalk.green('✅ Hamza Session Restored!'));
+  }catch(e){ console.log('Session Restore Error'); }
+}
 
 const app = express();
 const PORT = process.env.PORT || 10000;
-app.get('/', (req, res) => res.send(`HAMZA-JUTT-MD-BOT ONLINE - QR+PAIR ACTIVE - ${new Date()}`));
-app.listen(PORT, () => console.log(chalk.green(`  Server Running on Port ${PORT}`)));
+let qrCache = null;
+let pairSessions = {};
+
+// NEW HOME PAGE - QR + PAIR DONO
+app.get('/', (req, res) => {
+  res.send(`
+    <html><head><meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>body{background:#000;color:#fff;text-align:center;font-family:sans-serif;padding:10px}.box{background:#111;padding:15px;border-radius:15px;margin:15px auto;max-width:400px;border:1px solid #333}input{padding:12px;width:85%;border-radius:10px;border:none}button{padding:12px 20px;border:none;border-radius:10px;font-weight:bold;margin:8px;cursor:pointer}.qrBtn{background:#fff;color:#000}.pairBtn{background:gold;color:#000}#qrImg{margin-top:10px;background:#fff;padding:8px;border-radius:10px;display:none;width:250px}#code{color:gold;font-size:22px;margin-top:10px}#sess{color:lime;word-break:break-all;background:#222;padding:12px;border-radius:10px;margin-top:15px;display:none}</style>
+    </head><body>
+    <h2>👑 HAMZA-JUTT-MD-BOT</h2>
+    <div class="box"><h3>1. QR CODE</h3><button class="qrBtn" onclick="getQR()">GENERATE QR</button><div><img id="qrImg"></div></div>
+    <div class="box"><h3>2. PAIR CODE</h3><input id="num" placeholder="923262091250"><br><button class="pairBtn" onclick="getPair()">GET PAIR CODE</button><div id="code"></div></div>
+    <div id="sess" class="box"></div>
+    <script>
+      async function getQR(){let r=await fetch('/getqr');let d=await r.json();if(d.qr){document.getElementById('qrImg').src=d.qr;document.getElementById('qrImg').style.display='inline-block';} check('qr_user')}
+      async function getPair(){let n=document.getElementById('num').value;if(!n)return alert('Number dalo');document.getElementById('code').innerText='Wait...';let r=await fetch('/pair?number='+n);let d=await r.json();if(d.code)document.getElementById('code').innerText='PAIR CODE: '+d.code;else document.getElementById('code').innerText=d.error; check(n)}
+      function check(num){let clean=num.replace(/[^0-9]/g,'')||num;let iv=setInterval(async()=>{let s=await fetch('/check?number='+clean);let j=await s.json();if(j.session){document.getElementById('sess').style.display='block';document.getElementById('sess').innerHTML='<h3>✅ SESSION READY</h3><p>'+j.session+'</p>';clearInterval(iv);}},3000);}
+    </script></body></html>
+  `);
+});
+
+app.get('/getqr', (req,res)=>{
+  if(qrCache) res.json({qr: qrCache});
+  else res.json({error:'QR abhi generate ho raha hai, thori dair me Bot ke logs me dekho ya 5 sec baad dubara click karo'});
+});
+
+app.get('/pair', async (req,res)=>{
+  let number = req.query.number?.replace(/[^0-9]/g,'');
+  if(!number) return res.json({error:'Number do'});
+  try{
+    let code = await global.requestPairCode(number);
+    res.json({code});
+  }catch(e){ res.json({error:e.message}); }
+});
+
+app.get('/check', (req,res)=>{
+  let number = req.query.number?.replace(/[^0-9]/g,'') || req.query.number;
+  if(pairSessions[number]) res.json({session: pairSessions[number]});
+  else res.json({waiting:true});
+});
+
+app.listen(PORT, () => console.log(chalk.green(` Server Running on Port ${PORT} - QR+PAIR ACTIVE`)));
+
+// Global functions for index.js to use
+global.qrCache = (img)=>{ qrCache = img; };
+global.saveSession = (num, sess)=>{ pairSessions[num]=sess; };
+global.requestPairCode = null;
 
 const CONFIG = {
     BOT_NAME: "HAMZA-JUTT-MD-BOT",
