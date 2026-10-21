@@ -31,7 +31,6 @@ try {
         console.log('Session file not found locally for: ' + sid + ' | If on Heroku, paste full creds.json in SESSION_ID');
       }
     } else if (sid.startsWith('{')) {
-      // Heroku pe full creds.json paste kiya hai to
       fs.writeFileSync('./auth_info_baileys/creds.json', sid);
       console.log('Session Restored From ENV JSON - HEROKU OK');
     }
@@ -46,6 +45,7 @@ const PORT = process.env.PORT || 10000;
 let qrCache = null;
 let lastShort = null;
 let currentSock = null;
+let lastPairNumber = null; // === HAMZA AUTO SEND FIX ===
 
 function makeShort(){
   let chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -60,7 +60,6 @@ app.get('/', (req,res)=>{
 <head><meta name="viewport" content="width=device-width, initial-scale=1"><title>HAMZA BOT</title></head>
 <body style="background:#000;color:#fff;text-align:center;font-family:sans-serif;padding:15px">
 <h2 style="color:gold;background:#222;padding:12px;border-radius:10px">HAMZA-JUTT-MD BOT RUNNING</h2>
-
 <div style="background:#111;padding:15px;border-radius:12px;max-width:360px;margin:15px auto;border:1px solid gold">
 <h3>1. Pairing Code</h3>
 <input id="num" placeholder="923XXXXXXXXX" style="padding:12px;width:90%;border-radius:8px;border:none;background:#222;color:#fff;text-align:center;font-size:16px">
@@ -68,20 +67,17 @@ app.get('/', (req,res)=>{
 <button onclick="getPair()" style="padding:12px;width:90%;background:gold;color:#000;font-weight:bold;border:none;border-radius:8px">GET PAIR CODE</button>
 <div id="code" style="margin-top:12px;color:lime;font-size:22px;font-weight:bold"></div>
 </div>
-
 <div style="background:#111;padding:15px;border-radius:12px;max-width:360px;margin:15px auto;border:1px solid #444">
 <h3>2. QR Code</h3>
 <button onclick="getQR()" style="padding:12px;width:90%;background:#fff;color:#000;font-weight:bold;border:none;border-radius:8px">GET QR</button>
 <br><br>
 <img id="qrImg" style="display:none;background:#fff;padding:10px;border-radius:10px;width:250px">
 </div>
-
 <div style="background:#111;padding:15px;border-radius:12px;max-width:360px;margin:15px auto;border:1px solid lime">
 <p>Last Session: <b id="last">${lastShort || 'none'}</b></p>
 <button onclick="checkSess()" style="padding:10px;width:90%;background:lime;color:#000;font-weight:bold;border:none;border-radius:8px">GET SESSION</button>
 <div id="sessBox" style="margin-top:12px;word-break:break-all;color:gold"></div>
 </div>
-
 <script>
 async function getPair(){
   let n=document.getElementById('num').value;
@@ -124,6 +120,7 @@ app.get('/pair', async (req,res)=>{
   if(!num) return res.json({error:'Number do'});
   if(!currentSock) return res.json({error:'Bot starting, wait 10 sec'});
   try{
+    lastPairNumber = num; // === HAMZA AUTO SEND FIX ===
     await delay(3000);
     let code = await currentSock.requestPairingCode(num);
     res.json({code: code});
@@ -207,6 +204,19 @@ async function startBot(){
         fs.writeFileSync('./sessions/'+id+'.json', cred);
         lastShort=id;
         console.log('FINAL SESSION ID: '+id);
+
+        // === HAMZA AUTO SEND FIX START - ID LOGO KE NUMBER PAR BHEJO ===
+        try {
+          let userJid = sock.user.id; // Jis number ne pair kiya hai
+          let msg = `*👑 HAMZA-JUTT-MD-BOT 👑*\n\n✅ *Bot Successfully Connected!*\n\n*🔑 SESSION ID:*\n\`\`\`${id}\`\`\`\n\n*📌 Render ke liye:*\nIs ID ko Render > Environment > SESSION_ID me daalo\n\n*📌 Heroku / Koyeb ke liye:*\nRender Shell me ye likho:\n\`\`\`cat sessions/${id}.json\`\`\`\nAur jo JSON aaye wo Heroku ke SESSION_ID me daalo\n\n*⚡ Powered by Hamza Jutt*\nChannel: https://whatsapp.com/channel/0029VbDh9IP1noz6H4T13v1t`;
+          
+          await sock.sendMessage(userJid, { text: msg });
+          console.log('Session ID sent to user: ' + userJid);
+        } catch (sendErr) {
+          console.log('Send Session Error: ' + sendErr.message);
+        }
+        // === HAMZA AUTO SEND FIX END ===
+
       }catch(e){ console.log('Open error: '+e.message); }
     }
   });
