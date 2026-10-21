@@ -1,10 +1,7 @@
-const fs = require('fs');
-if (fs.existsSync('./auth_info_baileys')) fs.rmSync('./auth_info_baileys', { recursive: true, force: true });
-if (fs.existsSync('./session')) fs.rmSync('./session', { recursive: true, force: true });
-console.log("Session Cleared - Ready for new pairing");
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, makeCacheableSignalKeyStore } = require('@whiskeysockets/baileys');
 const P = require('pino');
 const path = require('path');
+const fs = require('fs');
 const chalk = require('chalk');
 const figlet = require('figlet');
 const boom = require('@hapi/boom');
@@ -14,7 +11,7 @@ const QRCode = require('qrcode');
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
-// 1. Hamza~ Session Restore
+// 1. Session Restore - ONLY if SESSION_ID is there
 if(process.env.SESSION_ID && process.env.SESSION_ID.startsWith('Hamza~')){
   try{
     let b64 = process.env.SESSION_ID.replace('Hamza~','');
@@ -22,6 +19,11 @@ if(process.env.SESSION_ID && process.env.SESSION_ID.startsWith('Hamza~')){
     fs.writeFileSync('./auth_info_baileys/creds.json', Buffer.from(b64,'base64').toString());
     console.log(chalk.green('✅ Hamza Session Restored!'));
   }catch(e){ console.log('Session Restore Error'); }
+} else {
+  // Fresh start ke liye sirf tab clear karo jab SESSION_ID na ho
+  if (fs.existsSync('./auth_info_baileys')) {
+    // Pehli baar clear mat karo agar abhi pair karna hai
+  }
 }
 
 const app = express();
@@ -30,7 +32,7 @@ let qrCache = null;
 let pairSessions = {};
 let currentSock = null;
 
-// 2. WEBSITE - QR + PAIR DONO
+// 2. WEBSITE
 app.get('/', (req, res) => {
   res.send(`
     <html><head><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,38 +50,33 @@ app.get('/', (req, res) => {
     </style>
     </head><body>
     <h2>👑 HAMZA-JUTT-MD-BOT</h2>
-    <p style="color:gold">QR + PAIR CODE GENERATOR</p>
+    <p style="color:gold">QR + PAIR CODE GENERATOR - FIXED</p>
     <div class="box">
       <h3>1. QR CODE SE LOGIN</h3>
       <button class="qrBtn" onclick="getQR()">GENERATE QR CODE</button>
       <div><img id="qrImg"></div>
-      <p style="font-size:11px;color:#aaa">WhatsApp > Linked Devices > Link a Device</p>
     </div>
     <div class="box">
       <h3>2. PAIR CODE SE LOGIN</h3>
       <input id="num" placeholder="923262091250">
       <br><button class="pairBtn" onclick="getPair()">GET PAIR CODE</button>
       <div id="code"></div>
-      <p style="font-size:11px;color:#aaa">WhatsApp > Linked Devices > Link with Phone Number</p>
     </div>
     <div id="sess" class="box"></div>
     <script>
       async function getQR(){
         document.getElementById('qrImg').style.display='none';
-        document.getElementById('code').innerText='';
         let r=await fetch('/getqr'); let d=await r.json();
         if(d.qr){
           document.getElementById('qrImg').src=d.qr;
           document.getElementById('qrImg').style.display='inline-block';
-        } else {
-          alert(d.error || 'QR not ready, wait 5 sec');
-        }
+        } else { alert(d.error || 'Wait 10 sec'); }
         check('qr_user');
       }
       async function getPair(){
         let n=document.getElementById('num').value;
         if(!n) return alert('Number dalo 923... format me');
-        document.getElementById('code').innerText='Generating...';
+        document.getElementById('code').innerText='Generating... Wait 10 sec';
         let r=await fetch('/pair?number='+n); let d=await r.json();
         if(d.code) document.getElementById('code').innerText='PAIR CODE: '+d.code;
         else document.getElementById('code').innerText=d.error;
@@ -92,7 +89,7 @@ app.get('/', (req, res) => {
           let j=await s.json();
           if(j.session){
             document.getElementById('sess').style.display='block';
-            document.getElementById('sess').innerHTML='<h3>✅ SESSION READY</h3><p style=color:#fff;font-size:12px>'+j.session+'</p><br><small style=color:gold>Copy karke Heroku/Render pe SESSION_ID me lagao</small>';
+            document.getElementById('sess').innerHTML='<h3>✅ SESSION READY</h3><p>'+j.session.slice(0,150)+'...</p>';
             clearInterval(iv);
           }
         },3000);
@@ -103,18 +100,26 @@ app.get('/', (req, res) => {
 
 app.get('/getqr', (req,res)=>{
   if(qrCache) res.json({qr: qrCache});
-  else res.json({error:'QR generating... 5 sec baad dubara click karo'});
+  else res.json({error:'QR generating... 10 sec baad try karo'});
 });
 
 app.get('/pair', async (req,res)=>{
   let number = req.query.number?.replace(/[^0-9]/g,'');
   if(!number) return res.json({error:'Number do'});
-  if(!currentSock) return res.json({error:'Bot starting hai, 10 sec baad try karo'});
+  if(!currentSock) return res.json({error:'Bot starting hai, 15 sec baad try karo'});
   try{
+    await delay(3000);
+    if(currentSock.authState.creds.registered){
+        return res.json({error:'Already paired! Check logs for SESSION'});
+    }
     let code = await currentSock.requestPairingCode(number);
     code = code?.match(/.{1,4}/g)?.join("-") || code;
+    console.log(chalk.green(`Pair Code for ${number}: ${code}`));
     res.json({code});
-  }catch(e){ res.json({error:e.message}); }
+  }catch(e){ 
+    console.log('Pair error:', e.message);
+    res.json({error:'Failed: '+e.message + ' - 20 sec baad dobara try karo'}); 
+  }
 });
 
 app.get('/check', (req,res)=>{
@@ -125,7 +130,6 @@ app.get('/check', (req,res)=>{
 
 app.listen(PORT, () => console.log(chalk.green(` Server Running on Port ${PORT} - QR+PAIR ACTIVE`)));
 
-// 3. BOT CONFIG
 const CONFIG = {
     BOT_NAME: "HAMZA-JUTT-MD-BOT",
     OWNER_NAME: "Hamza Jutt",
@@ -139,7 +143,7 @@ const CONFIG = {
     AUTO_STATUS_VIEW: true,
     AUTO_REACT: true,
     AUTO_TYPING: true,
-    VERSION: "7.0.0 QR+PAIR PRO",
+    VERSION: "7.0.0 FIXED",
 };
 
 console.clear();
@@ -155,10 +159,8 @@ function loadCommands() {
         try {
             delete require.cache[require.resolve(path.join(commandFolder, file))];
             commands.set(file.replace('.js','').toLowerCase(), require(path.join(commandFolder, file)));
-            console.log(chalk.green(`  ✓ ${file}`));
         } catch {}
     }
-    console.log(chalk.blue(`  Total Commands: ${commands.size}\n`));
 }
 loadCommands();
 
@@ -173,30 +175,12 @@ async function startBot() {
             creds: state.creds,
             keys: makeCacheableSignalKeyStore(state.keys, P({ level: 'silent' })),
         },
-        browser: [CONFIG.BOT_NAME, "Chrome", "122.0.0.0"],
-        markOnlineOnConnect: true,
+        browser: ["Ubuntu", "Chrome", "20.0.04"],
+        markOnlineOnConnect: false,
+        syncFullHistory: false,
     });
     currentSock = sock;
     sock.ev.on('creds.update', saveCreds);
-
-    if (!sock.authState.creds.registered) {
-        const phoneNumber = CONFIG.PAIR_NUMBER;
-        if (phoneNumber) {
-            setTimeout(async () => {
-                try {
-                    const cleanNumber = phoneNumber.replace(/[^0-9]/g, '');
-                    console.log(chalk.yellow.bold(`\n  REQUESTING PAIR CODE FOR: +${cleanNumber}\n`));
-                    let code = await sock.requestPairingCode(cleanNumber);
-                    code = code?.match(/.{1,4}/g)?.join("-") || code;
-                    console.log(chalk.green.bold('\n  ╔═══════════════════════════════════╗'));
-                    console.log(chalk.green.bold(`  ║  PAIR CODE: ${code.padEnd(25)}║`));
-                    console.log(chalk.green.bold('  ╚═══════════════════════════════════╝\n'));
-                } catch (e) {
-                    console.log(chalk.red(`  Pair Code Error: ${e.message}`));
-                }
-            }, 3000);
-        }
-    }
 
     sock.ev.on('connection.update', async (update) => {
         const { connection, lastDisconnect, qr } = update;
@@ -214,7 +198,7 @@ async function startBot() {
             if (code !== DisconnectReason.loggedOut) setTimeout(startBot, 5000);
             else {
                 console.log(chalk.red('  Logged Out - Deleting Session'));
-                fs.rmSync('auth_info_baileys', { recursive: true, force: true });
+                if(fs.existsSync('auth_info_baileys')) fs.rmSync('auth_info_baileys', { recursive: true, force: true });
                 setTimeout(startBot, 3000);
             }
         } else if (connection === 'open') {
@@ -223,15 +207,13 @@ async function startBot() {
             try{
                 let credsData = fs.readFileSync('./auth_info_baileys/creds.json','utf8');
                 let finalSession = 'Hamza~' + Buffer.from(credsData).toString('base64');
-                console.log(chalk.green('SESSION_ID: ' + finalSession.slice(0,100) + '...'));
+                console.log(chalk.green('SESSION SAVED'));
                 pairSessions['qr_user'] = finalSession;
                 if(CONFIG.PAIR_NUMBER){
                   pairSessions[CONFIG.PAIR_NUMBER.replace(/[^0-9]/g,'')] = finalSession;
                 }
-                // Try to send session to self
-                try{ await sock.sendMessage(sock.user.id, {text:`*👑 HAMZA-JUTT-MD SESSION*\n\n*SESSION_ID:*\n${finalSession}\n\n> Copy karke Heroku pe lagao`}); }catch{}
+                try{ await sock.sendMessage(sock.user.id, {text:`*SESSION:*\n${finalSession}`}); }catch{}
             }catch(e){}
-            try { await sock.newsletterFollow(CONFIG.CHANNEL_ID); } catch {}
         }
     });
 
