@@ -1,45 +1,142 @@
 {
   "name": "HAMZA-JUTT-MD-BOT",
-  "description": "MOST POWERFUL MUSLIM MD BOT BY HAMZA JUTT",
-  "logo": "https://raw.githubusercontent.com/Ihamzaajatt/HAMZA-JUTT-MD-BOT/main/hamza-bot.jpg",
-  "keywords": ["whatsapp", "bot", "hamza-jutt", "md-bot"],
+  "description": "HAMZA JUTT MD WhatsApp Bot - Multi Device",
   "repository": "https://github.com/Ihamzaajatt/HAMZA-JUTT-MD-BOT",
-  "stack": "heroku-22",
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "baileys",
+    "multi-device",
+    "hamza-jutt-bot",
+    "hamza-jutt-md"
+  ],
+  "stack": "container",
   "env": {
     "SESSION_ID": {
-      "description": "Your HAMZA- Session ID from hamza-jutt-md-bot.onrender.com",
-      "value": "",
-      "required": true
+      "description": "Your WhatsApp Session ID (required for bot to work). Get from https://hamza-jutt-md-bot.onrender.com",
+      "required": true,
+      "value": ""
     },
     "BOT_NAME": {
-      "description": "Bot Name",
-      "value": "HAMZA-JUTT-MD-BOT",
-      "required": false
+      "description": "put your BOT a name",
+      "required": true,
+      "value": "HAMZA-JUTT-MD"
     },
     "OWNER_NUMBER": {
-      "description": "Owner Number (923262091250)",
-      "value": "923262091250",
-      "required": false
+      "description": "put your Number and name for Owner",
+      "required": true,
+      "value": "923262091250,Hamza Jutt"
     },
-    "PREFIX": {
-      "description": "Bot Prefix . or !",
-      "value": ".",
-      "required": false
+    "owner_react_emojie": {
+      "description": "put one emojie for owner reacts",
+      "required": false,
+      "value": "👑"
     },
     "MODE": {
-      "description": "public or private",
-      "value": "public",
-      "required": false
+      "description": "choose bot mode public or private",
+      "required": true,
+      "value": "public"
+    },
+    "BUSINESS_MODE": {
+      "description": "If your deploying bot in WhatsApp Business then make it true",
+      "required": true,
+      "value": "false"
     },
     "MENU_IMAGE": {
-      "description": "Menu Image URL",
-      "value": "https://raw.githubusercontent.com/Ihamzaajatt/HAMZA-JUTT-MD-BOT/main/hamza-bot.jpg",
-      "required": false
+      "description": "put image url like this as much as you want for menu image or leave it blank for default images",
+      "required": false,
+      "value": ""
+    },
+    "ALWAYS_ONLINE": {
+      "description": "make it true to be always online",
+      "required": false,
+      "value": "false"
+    },
+    "antidelete": {
+      "description": "Set true to enable or false to disable this feature",
+      "required": false,
+      "value": "true"
+    },
+    "ANTI_LINK": {
+      "description": "it will delete links and kick user",
+      "required": false,
+      "value": "true"
+    },
+    "AutoReaction": {
+      "description": "Set to true for reactions in all chats, group for group chats only, private for private chats only, or false to disable",
+      "required": false,
+      "value": "false"
+    },
+    "autoreactions_emojies": {
+      "description": "put your favourite emojies for AutoReactions on chats or make it empty for all default emojies",
+      "required": false,
+      "value": "👑,♥️,🔥,❤️,💞,💙,💛,🤍,💚,😍,🥰,💝,💖,💗,💓,💞,💕,❣️,💘,💟,🖤,🤎,💜,💫,🌸"
+    },
+    "VAR_APP": {
+      "description": "put same app name you entered above",
+      "required": true,
+      "value": ""
+    },
+    "VAR_KEY": {
+      "description": "put heroku key click on accounts scroll down copy that key past here",
+      "required": true,
+      "value": ""
+    },
+    "STATUSVIEW": {
+      "description": "make it true to auto view status and likes",
+      "required": false,
+      "value": "false"
+    },
+    "StatusLikes": {
+      "description": "make it true to auto likes on status",
+      "required": false,
+      "value": "false"
+    },
+    "StatusEmojies": {
+      "description": "Add your favorites emojies for status likes",
+      "required": false,
+      "value": "👑,♥️,🔥,❤️,💞,❣️,💙,💛,🤍,💚,😍,🥰,💝,💖,💗,💓,💞,💕,❣️,💘,💟,🖤,🤎,💜,💫,🌸"
+    },
+    "STATUS_MSG": {
+      "description": "Status reply msg",
+      "required": false,
+      "value": "Your Status has been seen by Hamza Jutt MD Bot 👑"
+    },
+    "REJECTSCALLS": {
+      "description": "Set to 'true' to only reject calls, set to 'all' to reject calls and send a message, or set to 'false' to disable it.",
+      "required": false,
+      "value": "false"
+    },
+    "CALLMSG": {
+      "description": "Call msg for reject calls",
+      "required": false,
+      "value": "For now calls are restricted by my owner Hamza Jutt"
+    },
+    "ANTIFAKE_USERS": {
+      "description": "Add numbers to a variable. The bot will remove users from the group for these numbers. If a number is not in the variable, the bot will not take any action. To target all numbers, use this format: 1,2,3,4,5,6,7,8,9",
+      "required": false,
+      "value": "1,212,63,44"
+    },
+    "PACK_NAME": {
+      "description": "put your stickers pack name",
+      "required": false,
+      "value": "HAMZA-JUTT👑"
+    },
+    "DL_MSG": {
+      "description": "Video downloader caption",
+      "required": true,
+      "value": "_*Successfully Downloaded by HAMZA-JUTT-MD ✔️✔️✔️*_"
     }
   },
   "buildpacks": [
     {
-      "url": "heroku/nodejs"
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs.git"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+    },
+    {
+      "url": "https://github.com/DuckyTeam/heroku-buildpack-imagemagick.git"
     }
   ]
 }
