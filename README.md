@@ -14,7 +14,7 @@
 <img src="https://img.shields.io/badge/VERSION-2.0.0-PRO-gold?style=for-the-badge">
 <a href="https://whatsapp.com/channel/0029VbDh9IP1noz6H4T13v1t"><img src="https://img.shields.io/badge/OWNER-𝐇𝐀𝐌𝐙𝐀%20𝐉𝐔𝐓𝐓-blue?style=for-the-badge"></a>
 <img src="https://img.shields.io/badge/STATUS-ONLINE-ONLINE-green?style=for-the-badge">
-<img src="https://img.shields.io/badge/STYLISH-ANIMATED-purple?style=for-the-badge">
+<img src="https://img.shields.io/badge/PUBLIC-100%25%20PUBLIC-purple?style=for-the-badge">
 </p>
 
 <p align="center">
@@ -23,12 +23,13 @@
 
 ---
 
-### ⚡ FASTES
+### ⚡ FASTEST & PUBLIC
 
-- 🔥 **24/7 ACTIVE**
+- 🔥 **24/7 ACTIVE - 100% PUBLIC BOT**
 - ⚡ **FASTEST RESPONSE**
 - 🛡️ **ANTI-BAN SYSTEM**
-- 🚀 **POWERED BY 𝐇𝐀𝐌𝐙𝐀 𝐉𝐔𝐓𝐓**
+- 🚀 **ANYONE CAN DEPLOY NOW**
+- 👑 **POWERED BY 𝐇𝐀𝐌𝐙𝐀 𝐉𝐔𝐓𝐓**
 
 ---
 
@@ -42,7 +43,30 @@
 
 ---
 
-### 🚀 DEPLOYMENT METHODS
+### 📝 HOW TO GET SESSION_ID - PUBLIC METHOD
+
+#### ✅ METHOD 1: FOR RENDER (EASY - HAMZA ID)
+
+1. Go to Pair Site: https://hamza-jutt-md-bot.onrender.com
+2. Enter your number `923...` and get Pair Code
+3. Link in WhatsApp > Linked Devices > Link with Phone Number
+4. Bot will show `FINAL SESSION ID: HAMZA-XXXX`
+5. Go to Render Dashboard > Environment > Add `SESSION_ID` = `HAMZA-XXXX`
+6. Save - Bot 24/7 ON!
+
+#### ✅ METHOD 2: FOR HEROKU / KOYEB (PUBLIC - FULL JSON)
+
+> **IMPORTANT: Heroku pe `HAMZA-XXXX` kaam nahi karega, Full JSON lagana hoga!**
+
+1. Same as above, get connected once on Render
+2. Go to Render Shell and run: `cat sessions/HAMZA-*.json`
+3. Copy the FULL JSON `{"creds":...}`
+4. Go to Heroku > Settings > Config Vars > `SESSION_ID` = Paste that FULL JSON
+5. Deploy - Bot will start!
+
+---
+
+### 🚀 DEPLOYMENT METHODS - PUBLIC
 
 <a href="https://dashboard.heroku.com/new?template=https://github.com/Ihamzaajatt/HAMZA-JUTT-MD-BOT"><img src="https://img.shields.io/badge/DEPLOY_TO_HEROKU-𝐇𝐀𝐌𝐙𝐀-blue?style=for-the-badge&logo=heroku"></a>
 <a href="https://app.koyeb.com/deploy?type=git&repository=github.com/Ihamzaajatt/HAMZA-JUTT-MD-BOT"><img src="https://img.shields.io/badge/DEPLOY_TO_KOYEB-𝕳𝕬𝕸𝖅𝕬-black?style=for-the-badge"></a>
@@ -51,6 +75,13 @@
 ---
 
 ### 💎 HAMZA JUTT FEATURES
+
+- ✅ Pair Code + QR Code System
+- ✅ Public Ready - Anyone Can Deploy
+- ✅ Heroku / Koyeb / Render Support
+- ✅ Node 20.x + heroku-22 Compatible
+- ✅ Baileys 6.7.18 Latest
+- ✅ Anti-Link, Anti-Delete, Auto-React, Status View
 
 ---
 
@@ -74,12 +105,14 @@
 ---
 
 ### ⚠️ IMPORTANT NOTE
+This Bot is 100% Public now. Anyone can deploy using SESSION_ID. For Heroku, use Full JSON creds, not HAMZA- ID.
+
 ---
 
 ### ⚡ POWERED BY HAMZA JUTT ⚡
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Black+Ops+One&size=40&duration=2000&pause=1000&color=F7C500&center=true&width=800&height=80&lines=👑+HAMZA+JUTT+MD+BOT+👑;💎+THANKS+FOR+VISITING+💎" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Black+Ops+One&size=40&duration=2000&pause=1000&color=F7C500&center=true&width=800&height=80&lines=👑+HAMZA+JUTT+MD+BOT+👑;💎+THANKS+FOR+VISITING+💎;🚀+NOW+PUBLIC+BOT+🚀" />
 </p>
 
 <p align="center">
@@ -88,5 +121,5 @@
 
 <p align="center">
 <img src="https://img.shields.io/badge/MADE%20BY-𝐇𝐀𝐌𝐙𝐀%20𝐉𝐔𝐓𝐓-gold?style=for-the-badge">
-<img src="https://img.shields.io/badge/STYLISH-𝕳𝕬𝕸𝖅𝕬--𝕵𝖀𝕿𝕿--𝕸𝕯--𝕭𝕺𝕿-blue?style=for-the-badge">
+<img src="https://img.shields.io/badge/PUBLIC-100%25%20STYLISH%20PUBLIC-blue?style=for-the-badge">
 </p>
