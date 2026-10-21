@@ -20,6 +20,7 @@ module.exports = {
 
   // ⚙️ SETTINGS
   prefix: ".",
+  mode: "public",
   autoRead: true,
   autoReaction: true,
   autoStatusView: true,
