@@ -1,14 +1,15 @@
 {
   "name": "HAMZA-JUTT-MD-BOT",
-  "description": "HAMZA-JUTT-MD-BOT by Hamza Jutt - Muslim Bot",
-  "logo": "https://raw.githubusercontent.com/Ihamzasajjati/HAMZA-JUTT-MD-BOT/main/hamza-bot.jpg",
-  "keywords": ["whatsapp", "bot", "hamza-jutt", "muslim-bot"],
+  "description": "MOST POWERFUL MUSLIM MD BOT BY HAMZA JUTT",
+  "logo": "https://raw.githubusercontent.com/Ihamzaajatt/HAMZA-JUTT-MD-BOT/main/hamza-bot.jpg",
+  "keywords": ["whatsapp", "bot", "hamza-jutt", "md-bot"],
+  "repository": "https://github.com/Ihamzaajatt/HAMZA-JUTT-MD-BOT",
   "stack": "heroku-22",
   "env": {
     "SESSION_ID": {
-      "description": "Your Session ID",
+      "description": "Your HAMZA- Session ID from hamza-jutt-md-bot.onrender.com",
       "value": "",
-      "required": false
+      "required": true
     },
     "BOT_NAME": {
       "description": "Bot Name",
@@ -16,63 +17,23 @@
       "required": false
     },
     "OWNER_NUMBER": {
-      "description": "Owner Number 923262091250,Hamza Jutt",
-      "value": "923262091250,Hamza Jutt",
-      "required": false
-    },
-    "PAIR_NUMBER": {
-      "description": "Pair Number 923262091250",
-      "value": "",
+      "description": "Owner Number (923262091250)",
+      "value": "923262091250",
       "required": false
     },
     "PREFIX": {
-      "description": "Bot Prefix",
+      "description": "Bot Prefix . or !",
       "value": ".",
       "required": false
     },
     "MODE": {
-      "description": "Mode public or private",
+      "description": "public or private",
       "value": "public",
       "required": false
     },
     "MENU_IMAGE": {
-      "description": "Menu Image URL - hamza-bot.jpg",
-      "value": "https://raw.githubusercontent.com/Ihamzasajjati/HAMZA-JUTT-MD-BOT/main/hamza-bot.jpg",
-      "required": false
-    },
-    "BOT_IMAGE": {
-      "description": "Bot Image URL - hamza-bot.jpg",
-      "value": "https://raw.githubusercontent.com/Ihamzasajjati/HAMZA-JUTT-MD-BOT/main/hamza-bot.jpg",
-      "required": false
-    },
-    "GEMINI_KEY": {
-      "description": "Gemini Key",
-      "value": "",
-      "required": false
-    },
-    "ALWAYS_ONLINE": {
-      "description": "Always Online",
-      "value": "false",
-      "required": false
-    },
-    "AUTO_READ": {
-      "description": "Auto Read",
-      "value": "true",
-      "required": false
-    },
-    "STATUSVIEW": {
-      "description": "Auto Status View",
-      "value": "true",
-      "required": false
-    },
-    "REJECTSCALLS": {
-      "description": "Reject Calls",
-      "value": "false",
-      "required": false
-    },
-    "PACK_NAME": {
-      "description": "Sticker Pack Name",
-      "value": "HAMZA-JUTT-MD-BOT | MUSLIM BOT",
+      "description": "Menu Image URL",
+      "value": "https://raw.githubusercontent.com/Ihamzaajatt/HAMZA-JUTT-MD-BOT/main/hamza-bot.jpg",
       "required": false
     }
   },
