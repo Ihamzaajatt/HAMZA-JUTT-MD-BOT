@@ -4,7 +4,6 @@ if (fs.existsSync('./session')) fs.rmSync('./session', { recursive: true, force:
 console.log("Session Cleared - Ready for new pairing");
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, makeCacheableSignalKeyStore } = require('@whiskeysockets/baileys');
 const P = require('pino');
-const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const figlet = require('figlet');
