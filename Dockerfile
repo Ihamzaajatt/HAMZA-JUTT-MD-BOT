@@ -4,8 +4,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg git && r
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install --legacy-peer-deps
+COPY package.json yarn.lock ./
+RUN yarn install --network-timeout 100000 || npm install --legacy-peer-deps --force
 
 COPY . .
 
