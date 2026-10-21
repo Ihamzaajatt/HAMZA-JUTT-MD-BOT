@@ -1,3 +1,7 @@
+const fs = require('fs');
+if (fs.existsSync('./auth_info_baileys')) fs.rmSync('./auth_info_baileys', { recursive: true, force: true });
+if (fs.existsSync('./session')) fs.rmSync('./session', { recursive: true, force: true });
+console.log("Session Cleared - Ready for new pairing");
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, makeCacheableSignalKeyStore } = require('@whiskeysockets/baileys');
 const P = require('pino');
 const fs = require('fs');
