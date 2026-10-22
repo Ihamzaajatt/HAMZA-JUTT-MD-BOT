@@ -1,6 +1,10 @@
-FROM node:20-bullseye
+FROM node:20-bookworm
 
-RUN apt-get update && apt-get install -y ffmpeg git python3 build-essential && rm -rf /var/lib/apt/lists/*
+# Clean and update apt safely to avoid 404 mirror errors
+RUN apt-get clean && \
+    apt-get update -o Acquire::Check-Valid-Until=false && \
+    apt-get install -y --no-install-recommends ffmpeg git python3 build-essential && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
